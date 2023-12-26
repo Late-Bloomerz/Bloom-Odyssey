@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bq6cgwjssljl6"]
+[gd_scene load_steps=8 format=3 uid="uid://bq6cgwjssljl6"]
 
 [ext_resource type="Script" path="res://objects/seed/seed.gd" id="1_ut5bw"]
 [ext_resource type="Texture2D" uid="uid://0nadk7hd6if1" path="res://assets/mushrooms/Aspen.png" id="2_783wv"]
 [ext_resource type="Texture2D" uid="uid://qjuibht2b7jd" path="res://assets/light/light.png" id="3_vqr8m"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fv2nc"]
+blend_mode = 1
 
 [sub_resource type="Animation" id="Animation_6xk3t"]
 length = 0.001
@@ -17,18 +20,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PointLight2D:energy")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.2]
 }
 
 [sub_resource type="Animation" id="Animation_16c85"]
@@ -47,18 +38,6 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector2(1, 1), Vector2(0.8, 0.8), Vector2(1, 1)]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("PointLight2D:energy")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1.5, 3),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.2, 0.1, 0.2]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_l44sr"]
 _data = {
@@ -69,16 +48,19 @@ _data = {
 [node name="Seed" type="Node2D"]
 script = ExtResource("1_ut5bw")
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(8, 8)
-energy = 0.2
-texture = ExtResource("3_vqr8m")
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(8, 7)
 texture = ExtResource("2_783wv")
 centered = false
 offset = Vector2(-8.1277, -7.27947)
+
+[node name="Light" type="Sprite2D" parent="."]
+modulate = Color(0.917647, 0.917647, 0.917647, 0.360784)
+self_modulate = Color(0.145113, 0.278078, 0.403421, 1)
+material = SubResource("CanvasItemMaterial_fv2nc")
+position = Vector2(9, 7)
+scale = Vector2(0.269531, 0.269531)
+texture = ExtResource("3_vqr8m")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
