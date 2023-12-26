@@ -1,36 +1,122 @@
-[gd_scene load_steps=6 format=3 uid="uid://dkt64gket1lvi"]
+[gd_scene load_steps=14 format=3 uid="uid://dkt64gket1lvi"]
 
 [ext_resource type="FontFile" uid="uid://b12f3q67f05jw" path="res://assets/fonts/dialog_text.tres" id="1_qp7k6"]
 [ext_resource type="Texture2D" uid="uid://0nadk7hd6if1" path="res://assets/mushrooms/Aspen.png" id="2_3tja2"]
-[ext_resource type="Texture2D" uid="uid://d3tcibnubhohj" path="res://assets/mushrooms/Black_Trumpet.png" id="3_2r4nk"]
-[ext_resource type="Texture2D" uid="uid://c41gt0hpdotq6" path="res://assets/mushrooms/Ceasar's_Mushroom.png" id="4_6ect8"]
+[ext_resource type="Script" path="res://ui/shop.gd" id="2_spbe4"]
+[ext_resource type="PackedScene" uid="uid://bq6cgwjssljl6" path="res://objects/seed/seed.tscn" id="3_58i82"]
+[ext_resource type="Texture2D" uid="uid://bcw78oaamdi2r" path="res://assets/skill_empty.png" id="5_mfvny"]
+[ext_resource type="AudioStream" uid="uid://yt15biqsn2j5" path="res://assets/plant.wav" id="7_qbucj"]
+[ext_resource type="Texture2D" uid="uid://ds1edehutkoyn" path="res://assets/skill_cooldown_base.png" id="7_whe6j"]
+[ext_resource type="Texture2D" uid="uid://db56lvhl6f2pw" path="res://assets/skill_cooldown.png" id="8_pumma"]
+[ext_resource type="Texture2D" uid="uid://dxllijdip0k1w" path="res://assets/panel_blue_0.png" id="9_1jqkt"]
 
 [sub_resource type="Theme" id="Theme_7p4oy"]
 default_font = ExtResource("1_qp7k6")
 default_font_size = 40
+
+[sub_resource type="Animation" id="Animation_28av3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SeedSprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(3, 3)]
+}
+
+[sub_resource type="Animation" id="Animation_y5xb8"]
+resource_name = "SeedAnimation"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SeedSprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(3, 3), Vector2(2.5, 2.5), Vector2(3, 3)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sspsb"]
+_data = {
+"RESET": SubResource("Animation_28av3"),
+"SeedAnimation": SubResource("Animation_y5xb8")
+}
 
 [node name="Shop" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 2.0
+offset_right = 3.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = SubResource("Theme_7p4oy")
+script = ExtResource("2_spbe4")
+seed_scene = ExtResource("3_58i82")
+seed_cooldown_duration = 10
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="TextureRect" type="NinePatchRect" parent="."]
 layout_mode = 0
-offset_top = 1.0
-offset_right = 104.0
-offset_bottom = 54.0
+offset_right = 261.0
+offset_bottom = 117.0
+texture = ExtResource("9_1jqkt")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
 theme_override_constants/h_separation = 30
 columns = 3
 
-[node name="MarginContainer" type="VBoxContainer" parent="GridContainer"]
+[node name="MarginContainer" type="VBoxContainer" parent="MarginContainer/GridContainer"]
 layout_mode = 2
+tooltip_text = "Seed
+50 Hp
+Generate Experience"
 
-[node name="TextureRect" type="TextureRect" parent="GridContainer/MarginContainer"]
+[node name="CenterContainer" type="PanelContainer" parent="MarginContainer/GridContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/GridContainer/MarginContainer/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("5_mfvny")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/GridContainer/MarginContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/GridContainer/MarginContainer/CenterContainer/MarginContainer"]
 layout_mode = 2
 size_flags_stretch_ratio = 0.14
 tooltip_text = "Basic Seed
@@ -38,41 +124,118 @@ Will generate experience"
 texture = ExtResource("2_3tja2")
 expand_mode = 4
 
-[node name="Label" type="Label" parent="GridContainer/MarginContainer"]
+[node name="SeedCooldown" type="TextureProgressBar" parent="MarginContainer/GridContainer/MarginContainer/CenterContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-text = "100
-"
+step = 0.01
+fill_mode = 5
+nine_patch_stretch = true
+texture_under = ExtResource("7_whe6j")
+texture_progress = ExtResource("8_pumma")
+
+[node name="Label" type="Label" parent="MarginContainer/GridContainer/MarginContainer"]
+layout_mode = 2
+text = "100"
 horizontal_alignment = 1
 
-[node name="MarginContainer2" type="VBoxContainer" parent="GridContainer"]
+[node name="MarginContainer2" type="VBoxContainer" parent="MarginContainer/GridContainer"]
 layout_mode = 2
+
+[node name="CenterContainer" type="PanelContainer" parent="MarginContainer/GridContainer/MarginContainer2"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/GridContainer/MarginContainer2/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("5_mfvny")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/GridContainer/MarginContainer2/CenterContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/GridContainer/MarginContainer2/CenterContainer/MarginContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.14
 tooltip_text = "Basic Seed
 Will generate experience"
-
-[node name="TextureRect" type="TextureRect" parent="GridContainer/MarginContainer2"]
-layout_mode = 2
-tooltip_text = "Shroom Defender
-Will Attack Threat"
-texture = ExtResource("3_2r4nk")
+texture = ExtResource("2_3tja2")
 expand_mode = 4
 
-[node name="Label" type="Label" parent="GridContainer/MarginContainer2"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="MarginContainer/GridContainer/MarginContainer2/CenterContainer"]
 layout_mode = 2
-text = "125"
+value = 100.0
+fill_mode = 8
+nine_patch_stretch = true
+texture_under = ExtResource("7_whe6j")
+texture_progress = ExtResource("8_pumma")
+
+[node name="Label" type="Label" parent="MarginContainer/GridContainer/MarginContainer2"]
+layout_mode = 2
+text = "100"
 horizontal_alignment = 1
 
-[node name="MarginContainer3" type="VBoxContainer" parent="GridContainer"]
+[node name="MarginContainer3" type="VBoxContainer" parent="MarginContainer/GridContainer"]
 layout_mode = 2
+
+[node name="CenterContainer" type="PanelContainer" parent="MarginContainer/GridContainer/MarginContainer3"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/GridContainer/MarginContainer3/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("5_mfvny")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/GridContainer/MarginContainer3/CenterContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/GridContainer/MarginContainer3/CenterContainer/MarginContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.14
 tooltip_text = "Basic Seed
 Will generate experience"
-
-[node name="TextureRect" type="TextureRect" parent="GridContainer/MarginContainer3"]
-layout_mode = 2
-texture = ExtResource("4_6ect8")
+texture = ExtResource("2_3tja2")
 expand_mode = 4
 
-[node name="Label" type="Label" parent="GridContainer/MarginContainer3"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="MarginContainer/GridContainer/MarginContainer3/CenterContainer"]
 layout_mode = 2
-text = "100
-"
+value = 100.0
+fill_mode = 8
+nine_patch_stretch = true
+texture_under = ExtResource("7_whe6j")
+texture_progress = ExtResource("8_pumma")
+
+[node name="Label" type="Label" parent="MarginContainer/GridContainer/MarginContainer3"]
+layout_mode = 2
+text = "100"
 horizontal_alignment = 1
+
+[node name="SeedAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_sspsb")
+}
+autoplay = "SeedAnimation"
+
+[node name="SeedSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-10, -8)
+scale = Vector2(3, 3)
+texture = ExtResource("2_3tja2")
+centered = false
+offset = Vector2(3.33333, 2.66667)
+
+[node name="Plant" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_qbucj")
+
+[node name="SeedCooldownTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[connection signal="gui_input" from="MarginContainer/GridContainer/MarginContainer" to="." method="_on_margin_container_gui_input"]
+[connection signal="timeout" from="SeedCooldownTimer" to="." method="_on_seed_cooldown_timer_duration_timeout"]

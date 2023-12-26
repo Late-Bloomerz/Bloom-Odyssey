@@ -5,6 +5,7 @@ extends Node2D
 @onready var camera: Camera2D = $Camera2D
 @onready var experience_bar: TextureProgressBar = %ExperienceBar
 @onready var timer_label: Label = %TimerLabel
+@onready var tilemap: TileMap = $TileMap
 
 var scrolling_left: bool = false
 var scrolling_right: bool = false
@@ -23,10 +24,7 @@ func _ready():
   $LevelTimerCanvas.visible = false
   GameSignal.experience_generated.connect(_on_experience_generated)
   GameSignal.game_started.connect(_on_game_started)
-
-
   print("==Level started==")
-  print("Waiting for player to place their first seed")
 
 func _on_game_started() -> void:
   game_started = true
@@ -34,8 +32,10 @@ func _on_game_started() -> void:
   $CameraScroll.visible = true
   $Experience.visible = true
   $LevelTimerCanvas.visible = true
-  camera.move_local_y(475)
+  camera.global_translate(Vector2(0,475))
   $Menu.visible = false
+  $MenuBgm.playing = false
+  $GameBgm.playing = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -47,13 +47,14 @@ func _physics_process(delta):
   if !game_started:
     return
   if scrolling_left:
-    camera.position.x -= 4 * delta * 60
+    camera.global_position.x -= 4 * delta * 60
   if scrolling_right:
-    camera.position.x += 4 * delta * 60
+    camera.global_position.x += 4 * delta * 60
   if scrolling_top:
-    camera.position.y -= 4 * delta * 60
+    camera.global_translate(Vector2(0,global_position.y - 4 * delta *60))
+    #camera.global_position.y -= 4 * delta * 60
   if scrolling_bottom:
-    camera.position.y += 4 * delta * 60
+    camera.global_position.y += 4 * delta * 60
   
 
 func _unhandled_input(event):
