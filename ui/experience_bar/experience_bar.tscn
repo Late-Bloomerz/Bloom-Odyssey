@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://vv2udftw760u"]
+
+[ext_resource type="Texture2D" uid="uid://cmxxt0d0mqnbi" path="res://ui/experience_bar/channeling_bar_empty.png" id="1_7e7e3"]
+[ext_resource type="Texture2D" uid="uid://bennpira4nmuh" path="res://ui/experience_bar/channeling_bar.png" id="2_jwnat"]
+
+[node name="ExperienceBar" type="TextureProgressBar"]
+anchors_preset = -1
+anchor_right = 0.0292826
+anchor_bottom = 0.0117188
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+step = 0.1
+nine_patch_stretch = true
+stretch_margin_left = 4
+stretch_margin_right = 4
+texture_under = ExtResource("1_7e7e3")
+texture_progress = ExtResource("2_jwnat")
+metadata/_edit_use_anchors_ = true
