@@ -1,0 +1,78 @@
+[gd_scene load_steps=6 format=3 uid="uid://dkt64gket1lvi"]
+
+[ext_resource type="FontFile" uid="uid://b12f3q67f05jw" path="res://assets/fonts/dialog_text.tres" id="1_qp7k6"]
+[ext_resource type="Texture2D" uid="uid://0nadk7hd6if1" path="res://assets/mushrooms/Aspen.png" id="2_3tja2"]
+[ext_resource type="Texture2D" uid="uid://d3tcibnubhohj" path="res://assets/mushrooms/Black_Trumpet.png" id="3_2r4nk"]
+[ext_resource type="Texture2D" uid="uid://c41gt0hpdotq6" path="res://assets/mushrooms/Ceasar's_Mushroom.png" id="4_6ect8"]
+
+[sub_resource type="Theme" id="Theme_7p4oy"]
+default_font = ExtResource("1_qp7k6")
+default_font_size = 40
+
+[node name="Shop" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = SubResource("Theme_7p4oy")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 0
+offset_top = 1.0
+offset_right = 104.0
+offset_bottom = 54.0
+theme_override_constants/h_separation = 30
+columns = 3
+
+[node name="MarginContainer" type="VBoxContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="GridContainer/MarginContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.14
+tooltip_text = "Basic Seed
+Will generate experience"
+texture = ExtResource("2_3tja2")
+expand_mode = 4
+
+[node name="Label" type="Label" parent="GridContainer/MarginContainer"]
+layout_mode = 2
+text = "100
+"
+horizontal_alignment = 1
+
+[node name="MarginContainer2" type="VBoxContainer" parent="GridContainer"]
+layout_mode = 2
+tooltip_text = "Basic Seed
+Will generate experience"
+
+[node name="TextureRect" type="TextureRect" parent="GridContainer/MarginContainer2"]
+layout_mode = 2
+tooltip_text = "Shroom Defender
+Will Attack Threat"
+texture = ExtResource("3_2r4nk")
+expand_mode = 4
+
+[node name="Label" type="Label" parent="GridContainer/MarginContainer2"]
+layout_mode = 2
+text = "125"
+horizontal_alignment = 1
+
+[node name="MarginContainer3" type="VBoxContainer" parent="GridContainer"]
+layout_mode = 2
+tooltip_text = "Basic Seed
+Will generate experience"
+
+[node name="TextureRect" type="TextureRect" parent="GridContainer/MarginContainer3"]
+layout_mode = 2
+texture = ExtResource("4_6ect8")
+expand_mode = 4
+
+[node name="Label" type="Label" parent="GridContainer/MarginContainer3"]
+layout_mode = 2
+text = "100
+"
+horizontal_alignment = 1
