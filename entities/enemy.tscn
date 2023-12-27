@@ -1,25 +1,151 @@
-[gd_scene load_steps=6 format=3 uid="uid://dqts0hx8d2a7b"]
+[gd_scene load_steps=18 format=3 uid="uid://dqts0hx8d2a7b"]
 
 [ext_resource type="Texture2D" uid="uid://b1xlmwm5ha45r" path="res://assets/mushrooms/Bare-toothed_Russula.png" id="1_g5r7h"]
 [ext_resource type="Script" path="res://entities/enemy.gd" id="1_r42pi"]
 [ext_resource type="Texture2D" uid="uid://qjuibht2b7jd" path="res://assets/light/light.png" id="3_s3ykw"]
+[ext_resource type="Script" path="res://entities/Hitbox.gd" id="4_k4mss"]
+[ext_resource type="Texture2D" uid="uid://dif4i6vqwf4h7" path="res://assets/mushrooms/Champignon.png" id="4_xpk6t"]
+[ext_resource type="AudioStream" uid="uid://dwodydtdea55l" path="res://entities/enemy_attack.wav" id="5_bsvu2"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_x5f3i"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_rvue8"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_a3aeb"]
 blend_mode = 1
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e0iwq"]
+radius = 11.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kc2oq"]
+radius = 12.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fv4vq"]
+radius = 29.0
+
+[sub_resource type="Animation" id="Animation_opl5h"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Particle:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_ayjbc"]
+resource_name = "attack"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Particle:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AudioStreamPlayer2D:playing")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ieksk"]
+_data = {
+"RESET": SubResource("Animation_opl5h"),
+"attack": SubResource("Animation_ayjbc")
+}
+
+[sub_resource type="Gradient" id="Gradient_u61wg"]
+colors = PackedColorArray(0.633757, 0.633757, 0.633757, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hf6gv"]
+gradient = SubResource("Gradient_u61wg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_buuji"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 15.79
+angle_min = -335.4
+angle_max = 565.6
+direction = Vector3(0, 0, 0)
+spread = 10.0
+initial_velocity_min = 136.99
+initial_velocity_max = 136.99
+angular_velocity_min = 720.0
+angular_velocity_max = 720.0
+radial_velocity_max = 5.0
+gravity = Vector3(0, 0, 0)
+linear_accel_max = 26.97
+radial_accel_min = -1.34
+radial_accel_max = 21.13
+tangential_accel_min = 6.74
+tangential_accel_max = 20.22
+scale_min = 0.1
+scale_max = 0.5
+color_ramp = SubResource("GradientTexture1D_hf6gv")
+hue_variation_min = -1.0
+hue_variation_max = -0.93
 
 [node name="Enemy" type="CharacterBody2D"]
 script = ExtResource("1_r42pi")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_x5f3i")
+visible = false
+shape = SubResource("CircleShape2D_rvue8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_g5r7h")
-
-[node name="ChangeTargetTimer" type="Timer" parent="."]
-autostart = true
 
 [node name="Light" type="Sprite2D" parent="."]
 modulate = Color(0.917647, 0.917647, 0.917647, 0.360784)
@@ -29,4 +155,59 @@ position = Vector2(1.90735e-06, -0.999999)
 scale = Vector2(0.269531, 0.269531)
 texture = ExtResource("3_s3ykw")
 
+[node name="ChangeTargetTimer" type="Timer" parent="."]
+autostart = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("4_k4mss")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_e0iwq")
+disabled = true
+debug_color = Color(0.976471, 0, 0.407843, 0.419608)
+
+[node name="Hurtbox" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CircleShape2D_kc2oq")
+debug_color = Color(0, 0.631373, 0.466667, 0.419608)
+
+[node name="AttackRadius" type="Area2D" parent="."]
+visible = false
+collision_layer = 32
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRadius"]
+shape = SubResource("CircleShape2D_fv4vq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ieksk")
+}
+
+[node name="Particle" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 30
+process_material = SubResource("ParticleProcessMaterial_buuji")
+texture = ExtResource("4_xpk6t")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+
+[node name="AttackCooldown" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_bsvu2")
+volume_db = -10.0
+
 [connection signal="timeout" from="ChangeTargetTimer" to="." method="_on_change_target_timer_timeout"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="area_entered" from="AttackRadius" to="." method="_on_attack_radius_area_entered"]
+[connection signal="area_exited" from="AttackRadius" to="." method="_on_attack_radius_area_exited"]
+[connection signal="timeout" from="AttackCooldown" to="." method="_on_attack_cooldown_timeout"]
