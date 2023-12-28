@@ -1,7 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://bq6cgwjssljl6"]
+[gd_scene load_steps=15 format=3 uid="uid://bq6cgwjssljl6"]
 
 [ext_resource type="Script" path="res://objects/seed/seed.gd" id="1_ut5bw"]
+[ext_resource type="PackedScene" uid="uid://bc5t4ett3eoyy" path="res://objects/root/root.tscn" id="2_2mj3p"]
 [ext_resource type="Texture2D" uid="uid://0nadk7hd6if1" path="res://assets/mushrooms/Aspen.png" id="2_783wv"]
+[ext_resource type="PackedScene" uid="uid://c8icwu31yvnp4" path="res://objects/seed/seed_bloom.tscn" id="3_4tkwg"]
 [ext_resource type="Texture2D" uid="uid://qjuibht2b7jd" path="res://assets/light/light.png" id="3_vqr8m"]
 [ext_resource type="Script" path="res://objects/seed/seed_hurtbox.gd" id="4_e5cfs"]
 
@@ -72,8 +74,32 @@ _data = {
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4c54w"]
 
+[sub_resource type="Gradient" id="Gradient_8q0us"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tbf76"]
+gradient = SubResource("Gradient_8q0us")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_psha1"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 100.0
+linear_accel_max = 100.0
+radial_accel_min = -100.0
+radial_accel_max = 100.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+scale_max = 1.5
+color_ramp = SubResource("GradientTexture1D_tbf76")
+hue_variation_min = -1.0
+hue_variation_max = -0.76
+
 [node name="Seed" type="Node2D"]
 script = ExtResource("1_ut5bw")
+root = ExtResource("2_2mj3p")
+bloom_form = ExtResource("3_4tkwg")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(8, 7)
@@ -106,6 +132,16 @@ script = ExtResource("4_e5cfs")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(8, 8)
 shape = SubResource("CircleShape2D_4c54w")
+
+[node name="Particle" type="GPUParticles2D" parent="."]
+position = Vector2(8, 8)
+emitting = false
+amount = 30
+process_material = SubResource("ParticleProcessMaterial_psha1")
+lifetime = 0.5
+one_shot = true
+speed_scale = 1.2
+explosiveness = 1.0
 
 [connection signal="timeout" from="ExperienceTimer" to="." method="_on_experience_timer_timeout"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

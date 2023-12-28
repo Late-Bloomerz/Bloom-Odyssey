@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://b5mx7i5ix2pc3"]
+
+[sub_resource type="Gradient" id="Gradient_t7uio"]
+offsets = PackedFloat32Array(0, 0.980519)
+colors = PackedColorArray(0.345098, 0.87451, 0.466667, 1, 0.345098, 0.87451, 0.466667, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_864r4"]
+gradient = SubResource("Gradient_t7uio")
+width = 16
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ckpl1"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_hmagf"]
+colors = PackedColorArray(0.99558, 0.99558, 0.99558, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_81li4"]
+gradient = SubResource("Gradient_hmagf")
+width = 16
+
+[node name="Indicator" type="Sprite2D"]
+self_modulate = Color(1, 1, 1, 0.121569)
+scale = Vector2(1, 16)
+texture = SubResource("GradientTexture1D_864r4")
+centered = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_ckpl1")
+texture = SubResource("GradientTexture1D_81li4")
+centered = false

@@ -6,6 +6,9 @@ extends Node2D
 @onready var experience_bar: TextureProgressBar = %ExperienceBar
 @onready var timer_label: Label = %TimerLabel
 @onready var tilemap: TileMap = $TileMap
+@onready var spawn_timer: Timer = $SpawnTimer
+
+@export var easy_enemy: PackedScene
 
 var scrolling_left: bool = false
 var scrolling_right: bool = false
@@ -13,6 +16,10 @@ var scrolling_top: bool = false
 var scrolling_bottom: bool = false
 
 var level_second_elapsed: int = 1
+
+var current_level: int = 1
+var exp_to_level_up: int = 100
+var current_exp: int = 0
 
 var game_started: bool = false
 
@@ -79,7 +86,16 @@ func _unhandled_input(event):
     scrolling_left = false
 
 func _on_experience_generated(value: int):
-  experience_bar.value += value
+  current_exp += value
+  experience_bar.value = current_exp
+  if current_exp >= exp_to_level_up:
+    current_level += 1
+    experience_bar.value = 0
+    current_exp = 0
+    exp_to_level_up = exp_to_level_up +  (100 + current_level / 5)
+    experience_bar.max_value = exp_to_level_up 
+    GameSignal.emit_signal("money_gained", 100)
+
   
 
 
@@ -111,3 +127,35 @@ func secondsToTimeString(seconds: int) -> String:
   var minutes = seconds / 60
   var remainingSeconds = seconds % 60
   return String.num(minutes).pad_zeros(2) + ":" + String.num(remainingSeconds).pad_zeros(2)
+
+
+func _on_spawn_timer_timeout():
+  if get_tree().get_nodes_in_group("Seed").size() ==0:
+    return
+
+  randomize()
+  if level_second_elapsed > 0 && level_second_elapsed < 30:
+    for n in range(2):
+      var enemy_instance = easy_enemy.instantiate()
+      var seeds: Array = get_tree().get_nodes_in_group("Seed")
+      var choosen_seed = seeds[randi() % seeds.size()];
+      enemy_instance.global_position = choosen_seed.global_position + Vector2(randf_range(-50,100), randf_range(-50,100))
+      add_child(enemy_instance)
+  if level_second_elapsed >  30 && level_second_elapsed < 60:
+    spawn_timer.wait_time = 8
+    for n in range(3):
+      var enemy_instance = easy_enemy.instantiate()
+      var seeds: Array = get_tree().get_nodes_in_group("Seed")
+      var choosen_seed = seeds[randi() % seeds.size()];
+      enemy_instance.global_position = choosen_seed.global_position + Vector2(randf_range(-50,100), randf_range(-50,100))
+      add_child(enemy_instance)
+  if level_second_elapsed >  60 && level_second_elapsed < 90:
+    spawn_timer.wait_time = 7
+    for n in range(4):
+      var enemy_instance = easy_enemy.instantiate()
+      var seeds: Array = get_tree().get_nodes_in_group("Seed")
+      var choosen_seed = seeds[randi() % seeds.size()];
+      enemy_instance.global_position = choosen_seed.global_position + Vector2(randf_range(-50,100), randf_range(-50,100))
+      add_child(enemy_instance)
+    
+  
