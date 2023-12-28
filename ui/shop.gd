@@ -5,12 +5,16 @@ var casted_seed: String
 @onready var seed_sprite: Sprite2D = $SeedSprite
 @onready var tilemap: TileMap = get_parent().get_parent().get_node("TileMap")
 @onready var seed_cooldown: TextureProgressBar = %SeedCooldown
+@onready var seed_texture: TextureRect = %SeedTexture
 @onready var seed_cooldown_timer: Timer = $SeedCooldownTimer
+@onready var money_label: Label = $MoneyLabel
 
 @export var seed_scene: PackedScene
 @export var seed_cooldown_duration: int
 
+
 var placed_mushroom: Array[Vector2] = [Vector2(688, 384)]
+var money: int = 100
 
 func _ready():
   seed_cooldown.max_value = seed_cooldown_duration * 60
@@ -46,16 +50,23 @@ func _unhandled_input(event):
           seed_cooldown_timer.start()
           seed_cooldown.value = seed_cooldown_duration * 60
           instanced_seed.add_to_group("Seed")
+          GameSignal.emit_signal("item_purchased", 100)
+          money -= 100
+          money_label.text = "Money: " + str(money)
+      if !check_custom_data(mouse_position_to_tile_position, "is_dirt", 0) && is_casting:
+        UiUtils.show_info("Can't place there")
 
 
 func _on_margin_container_gui_input(event: InputEvent):
-  if event.is_action_pressed("left_click") && seed_cooldown_timer.is_stopped():
+  if event.is_action_pressed("left_click") && seed_cooldown_timer.is_stopped() && money >= 100:
     seed_sprite.visible = true
     await get_tree().create_timer(0.1).timeout
     is_casting = true
     casted_seed = "seed"
   if event.is_action_pressed("left_click") && !seed_cooldown_timer.is_stopped():
-    print("Sedang Cooldown")
+    UiUtils.show_info("On Cooldown")
+  elif event.is_action_pressed("left_click") && money < 100:
+    UiUtils.show_info("Not Enough Money")
 
 func check_custom_data(mouse_pos, custom_data_variable,layer):
   var tile_data: TileData = tilemap.get_cell_tile_data(layer,mouse_pos)
@@ -69,3 +80,11 @@ func _on_seed_cooldown_timer_timeout():
 
 func _on_seed_cooldown_timer_duration_timeout():
   seed_cooldown.value = 0
+
+
+func _on_margin_container_mouse_entered():
+  seed_texture.modulate = Color.LIGHT_BLUE
+
+
+func _on_margin_container_mouse_exited():
+  seed_texture.modulate = Color.WHITE

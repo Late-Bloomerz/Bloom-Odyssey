@@ -1,21 +1,22 @@
 extends CharacterBody2D
 
-const SPEED = 5
-const JUMP_VELOCITY = -400.0
+const SPEED = 10
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+@onready var particle: GPUParticles2D = $Particle
+@onready var animation: AnimationPlayer = $AnimationPlayer
+@onready var attack_cooldown_timer: Timer = $AttackCooldown
 
-var closest_node = null
+var closest_node
 var closest_distance = 999999
 var target
+var targets: Array
 
 var game_started = false
 
 func _ready():
   search_target()
-
   GameSignal.game_started.connect(func(): game_started = true)
+  GameSignal.seed_died.connect(_on_seed_died)
 
 func _physics_process(_delta):
   if target != null && game_started:
@@ -30,8 +31,31 @@ func search_target():
       closest_distance = distance
       closest_node = node
     if closest_node:
-      print("Closest node:", closest_node.name)
       target = closest_node
 
 func _on_change_target_timer_timeout():
   search_target()
+
+func _on_seed_died(died_seed):
+  targets.erase(died_seed)
+  target = null
+  closest_distance = 999999
+
+func _on_hurtbox_area_entered(area):
+  pass # Replace with function body.
+
+func _on_attack_radius_area_entered(area):
+  if area.has_method("is_seed"):
+    targets.append(area)
+    if !animation.is_playing():
+      animation.play("attack")
+      attack_cooldown_timer.start()
+  
+func _on_attack_radius_area_exited(area):
+  targets.erase(area)
+  if targets.size() <= 0:
+    attack_cooldown_timer.stop()
+
+func _on_attack_cooldown_timeout():
+  if targets.size() > 0:
+    animation.play("attack")

@@ -116,7 +116,8 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/GridContainer/MarginContainer/CenterContainer/MarginContainer"]
+[node name="SeedTexture" type="TextureRect" parent="MarginContainer/GridContainer/MarginContainer/CenterContainer/MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_stretch_ratio = 0.14
 tooltip_text = "Basic Seed
@@ -237,5 +238,15 @@ stream = ExtResource("7_qbucj")
 wait_time = 10.0
 one_shot = true
 
+[node name="MoneyLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 117.0
+offset_right = 201.0
+offset_bottom = 158.0
+text = "Money: 100"
+
 [connection signal="gui_input" from="MarginContainer/GridContainer/MarginContainer" to="." method="_on_margin_container_gui_input"]
+[connection signal="mouse_entered" from="MarginContainer/GridContainer/MarginContainer" to="." method="_on_margin_container_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/GridContainer/MarginContainer" to="." method="_on_margin_container_mouse_exited"]
 [connection signal="timeout" from="SeedCooldownTimer" to="." method="_on_seed_cooldown_timer_duration_timeout"]
