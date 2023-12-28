@@ -1,0 +1,71 @@
+[gd_scene load_steps=10 format=3 uid="uid://lypwpsjjqbxk"]
+
+[ext_resource type="PackedScene" uid="uid://bq6cgwjssljl6" path="res://objects/seed/seed.tscn" id="1_lotmt"]
+[ext_resource type="Script" path="res://objects/attacker/attacker.gd" id="2_gqiqx"]
+[ext_resource type="Texture2D" uid="uid://bwfbfw8l256ok" path="res://assets/mushrooms/Chanterelle.png" id="2_sc3wj"]
+[ext_resource type="PackedScene" uid="uid://c3jbgxkfnhmpg" path="res://objects/attack_projectile/attack_projectile.tscn" id="3_wfx3w"]
+[ext_resource type="AudioStream" uid="uid://dwodydtdea55l" path="res://entities/enemy_attack.wav" id="5_3v1gx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lvbuh"]
+radius = 98.1275
+
+[sub_resource type="Gradient" id="Gradient_27acf"]
+offsets = PackedFloat32Array(0.540984, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_k2d70"]
+gradient = SubResource("Gradient_27acf")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_p0p3b"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 1.0
+spread = 180.0
+initial_velocity_max = 47.84
+gravity = Vector3(0, 0, 0)
+radial_accel_max = 64.37
+tangential_accel_max = 53.93
+scale_max = 2.0
+color = Color(0.541176, 0.811765, 0.533333, 0.733333)
+color_ramp = SubResource("GradientTexture1D_k2d70")
+
+[node name="Attacker" instance=ExtResource("1_lotmt")]
+script = ExtResource("2_gqiqx")
+damage = 0
+cooldown = 1.0
+projectile_spped = 500
+projectile_scene = ExtResource("3_wfx3w")
+
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource("2_sc3wj")
+
+[node name="DetectionRange" type="Area2D" parent="." index="6"]
+position = Vector2(8, 8)
+collision_layer = 64
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRange" index="0"]
+shape = SubResource("CircleShape2D_lvbuh")
+debug_color = Color(0.956863, 0, 0.541176, 0.419608)
+
+[node name="AttackAnimation" type="AnimationPlayer" parent="." index="7"]
+
+[node name="AttackCooldown" type="Timer" parent="." index="8"]
+autostart = true
+
+[node name="Audio" type="AudioStreamPlayer2D" parent="." index="9"]
+stream = ExtResource("5_3v1gx")
+volume_db = -10.0
+max_polyphony = 10
+
+[node name="Particle2" type="GPUParticles2D" parent="." index="10"]
+position = Vector2(8, 4)
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_p0p3b")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+
+[connection signal="area_entered" from="DetectionRange" to="." method="_on_detection_range_area_entered"]
+[connection signal="area_exited" from="DetectionRange" to="." method="_on_detection_range_area_exited"]
+[connection signal="timeout" from="AttackCooldown" to="." method="_on_attack_cooldown_timeout"]

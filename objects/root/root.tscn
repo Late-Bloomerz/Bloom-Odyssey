@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=3 uid="uid://bc5t4ett3eoyy"]
+
+[ext_resource type="Texture2D" uid="uid://d024k07iq6x17" path="res://assets/root_sheet.png" id="1_gnmfe"]
+[ext_resource type="Texture2D" uid="uid://qjuibht2b7jd" path="res://assets/light/light.png" id="2_jl2yy"]
+
+[sub_resource type="Animation" id="Animation_b721o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_xy4lc"]
+resource_name = "grow"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1uqe5"]
+_data = {
+"RESET": SubResource("Animation_b721o"),
+"grow": SubResource("Animation_xy4lc")
+}
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_swicw"]
+blend_mode = 1
+
+[node name="Root" type="Sprite2D"]
+self_modulate = Color(1, 1, 1, 0.372549)
+texture = ExtResource("1_gnmfe")
+centered = false
+hframes = 7
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_1uqe5")
+}
+autoplay = "grow"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.603922, 0.968627, 0.345098, 0.0941176)
+material = SubResource("CanvasItemMaterial_swicw")
+position = Vector2(11, 8)
+scale = Vector2(0.207031, 0.207031)
+texture = ExtResource("2_jl2yy")

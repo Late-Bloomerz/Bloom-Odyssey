@@ -509,6 +509,7 @@ sources/1 = SubResource("TileSetAtlasSource_yo7yc")
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_ncam8")
+easy_enemy = ExtResource("21_oyoea")
 metadata/_edit_vertical_guides_ = [1413.0, 688.0]
 metadata/_edit_horizontal_guides_ = [767.0, -473.0, 384.0, 475.0]
 
@@ -718,64 +719,14 @@ layer_1/tile_data = PackedInt32Array(3, 196609, 1, 4, 196609, 1, 5, 196609, 1, 6
 [node name="Seed" parent="." groups=["Seed"] instance=ExtResource("4_w6hp0")]
 position = Vector2(688, 384)
 
-[node name="Seed2" parent="." groups=["Seed"] instance=ExtResource("4_w6hp0")]
-position = Vector2(721, 460)
-
-[node name="Seed3" parent="." groups=["Seed"] instance=ExtResource("4_w6hp0")]
-position = Vector2(901, 435)
-
-[node name="Seed4" parent="." groups=["Seed"] instance=ExtResource("4_w6hp0")]
-position = Vector2(841, 293)
-
-[node name="Seed5" parent="." groups=["Seed"] instance=ExtResource("4_w6hp0")]
-position = Vector2(461, 293)
-
-[node name="Seed6" parent="." groups=["Seed"] instance=ExtResource("4_w6hp0")]
-position = Vector2(382, 419)
-
-[node name="Seed7" parent="." groups=["Seed"] instance=ExtResource("4_w6hp0")]
-position = Vector2(437, 536)
-
-[node name="Enemy" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(611, 427)
-
-[node name="Enemy2" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(446, 384)
-
-[node name="Enemy3" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(579, 301)
-
-[node name="Enemy4" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(539, 441)
-
-[node name="Enemy5" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(345, 495)
-
-[node name="Enemy6" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(619, 536)
-
-[node name="Enemy7" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(841, 528)
-
-[node name="Enemy8" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(808, 410)
-
-[node name="Enemy9" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(743, 293)
-
-[node name="Enemy10" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(979, 328)
-
-[node name="Enemy11" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(1044, 487)
-
-[node name="Enemy12" parent="." instance=ExtResource("21_oyoea")]
-position = Vector2(909, 357)
-
 [node name="GameBgm" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_uyjtx")
 volume_db = -2.0
 bus = &"BGM"
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
 
 [connection signal="timeout" from="LevelTimer" to="." method="_on_level_timer_timeout"]
 [connection signal="mouse_entered" from="CameraScroll/Left" to="." method="_on_left_mouse_entered"]
@@ -786,3 +737,4 @@ bus = &"BGM"
 [connection signal="mouse_exited" from="CameraScroll/Top" to="." method="_on_top_mouse_exited"]
 [connection signal="mouse_entered" from="CameraScroll/Bottom" to="." method="_on_bottom_mouse_entered"]
 [connection signal="mouse_exited" from="CameraScroll/Bottom" to="." method="_on_bottom_mouse_exited"]
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

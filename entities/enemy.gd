@@ -5,21 +5,28 @@ const SPEED = 10
 @onready var particle: GPUParticles2D = $Particle
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var attack_cooldown_timer: Timer = $AttackCooldown
+@onready var sprite: Sprite2D = $Sprite2D
+
+@export var damage: int = 30
+@export var hp: int = 100
+@export var exp: int = 20
+@export var money: int = 20
 
 var closest_node
 var closest_distance = 999999
 var target
 var targets: Array
 
-var game_started = false
 
 func _ready():
+  sprite.modulate = Color.TRANSPARENT
   search_target()
-  GameSignal.game_started.connect(func(): game_started = true)
   GameSignal.seed_died.connect(_on_seed_died)
+  var tween = get_tree().create_tween()
+  await tween.tween_property(sprite, "modulate", Color.WHITE, 0.5).finished
 
 func _physics_process(_delta):
-  if target != null && game_started:
+  if target != null:
     velocity = global_position.direction_to(target.global_position) * SPEED
   move_and_slide()
 
@@ -42,7 +49,19 @@ func _on_seed_died(died_seed):
   closest_distance = 999999
 
 func _on_hurtbox_area_entered(area):
-  pass # Replace with function body.
+  if area.has_method("is_seed_projectile"):
+    area.queue_free()
+    hp -= area.damage
+    if hp <= 0:
+      area.target = null
+      queue_free()
+      GameSignal.emit_signal("enemy_died", self)
+      GameSignal.emit_signal("money_gained", money)
+      GameSignal.emit_signal("experience_generated", exp)
+    sprite.modulate = Color.RED
+    await get_tree().create_timer(0.1).timeout
+    sprite.modulate = Color.WHITE
+
 
 func _on_attack_radius_area_entered(area):
   if area.has_method("is_seed"):

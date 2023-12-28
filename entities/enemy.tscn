@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dqts0hx8d2a7b"]
+[gd_scene load_steps=19 format=3 uid="uid://dqts0hx8d2a7b"]
 
 [ext_resource type="Texture2D" uid="uid://b1xlmwm5ha45r" path="res://assets/mushrooms/Bare-toothed_Russula.png" id="1_g5r7h"]
 [ext_resource type="Script" path="res://entities/enemy.gd" id="1_r42pi"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://entities/Hitbox.gd" id="4_k4mss"]
 [ext_resource type="Texture2D" uid="uid://dif4i6vqwf4h7" path="res://assets/mushrooms/Champignon.png" id="4_xpk6t"]
 [ext_resource type="AudioStream" uid="uid://dwodydtdea55l" path="res://entities/enemy_attack.wav" id="5_bsvu2"]
+[ext_resource type="Script" path="res://entities/Hurtbox.gd" id="5_yml55"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rvue8"]
 
@@ -141,7 +142,6 @@ hue_variation_max = -0.93
 script = ExtResource("1_r42pi")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("CircleShape2D_rvue8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -169,14 +169,15 @@ disabled = true
 debug_color = Color(0.976471, 0, 0.407843, 0.419608)
 
 [node name="Hurtbox" type="Area2D" parent="."]
-visible = false
+collision_layer = 4
+collision_mask = 80
+script = ExtResource("5_yml55")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource("CircleShape2D_kc2oq")
 debug_color = Color(0, 0.631373, 0.466667, 0.419608)
 
 [node name="AttackRadius" type="Area2D" parent="."]
-visible = false
 collision_layer = 32
 collision_mask = 2
 

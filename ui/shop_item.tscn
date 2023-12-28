@@ -1,0 +1,68 @@
+[gd_scene load_steps=6 format=3 uid="uid://76aq0ojx8p3"]
+
+[ext_resource type="Script" path="res://ui/shop_item.gd" id="1_56slg"]
+[ext_resource type="Texture2D" uid="uid://bcw78oaamdi2r" path="res://assets/skill_empty.png" id="1_i3e7w"]
+[ext_resource type="Texture2D" uid="uid://0nadk7hd6if1" path="res://assets/mushrooms/Aspen.png" id="2_ok4gn"]
+[ext_resource type="Texture2D" uid="uid://ds1edehutkoyn" path="res://assets/skill_cooldown_base.png" id="3_dpl0f"]
+[ext_resource type="Texture2D" uid="uid://db56lvhl6f2pw" path="res://assets/skill_cooldown.png" id="4_7b8oj"]
+
+[node name="ShopItem" type="VBoxContainer"]
+offset_right = 28.0
+offset_bottom = 53.0
+tooltip_text = "Seed
+50 Hp
+Generate Experience"
+mouse_default_cursor_shape = 2
+script = ExtResource("1_56slg")
+
+[node name="CenterContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect2" type="TextureRect" parent="CenterContainer"]
+layout_mode = 2
+texture = ExtResource("1_i3e7w")
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="SeedTexture" type="TextureRect" parent="CenterContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_stretch_ratio = 0.14
+tooltip_text = "Basic Seed
+Will generate experience"
+texture = ExtResource("2_ok4gn")
+expand_mode = 4
+
+[node name="SeedCooldown" type="TextureProgressBar" parent="CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+step = 0.01
+fill_mode = 5
+nine_patch_stretch = true
+texture_under = ExtResource("3_dpl0f")
+texture_progress = ExtResource("4_7b8oj")
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "100"
+horizontal_alignment = 1
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Sprite" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(2, 2)
+texture = ExtResource("2_ok4gn")
+centered = false
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]
