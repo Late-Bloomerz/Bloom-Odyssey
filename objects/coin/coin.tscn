@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=3 uid="uid://bt35a5etrfive"]
+
+[ext_resource type="Script" path="res://objects/coin/coin.gd" id="1_x11y0"]
+[ext_resource type="Texture2D" uid="uid://dygf2u6l05nuy" path="res://objects/seed/coin.png" id="1_yn07a"]
+
+[sub_resource type="Animation" id="Animation_q3yna"]
+resource_name = "SPIN"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6]
+}
+
+[sub_resource type="Animation" id="Animation_l7a2c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bytgp"]
+_data = {
+"RESET": SubResource("Animation_l7a2c"),
+"SPIN": SubResource("Animation_q3yna")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d667j"]
+radius = 15.1327
+
+[node name="Coin" type="Area2D"]
+scale = Vector2(0.8, 0.8)
+script = ExtResource("1_x11y0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(78, 166)
+texture = ExtResource("1_yn07a")
+offset = Vector2(-78, -166)
+hframes = 7
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_bytgp")
+}
+autoplay = "SPIN"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_d667j")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

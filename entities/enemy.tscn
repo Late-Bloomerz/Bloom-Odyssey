@@ -145,6 +145,7 @@ script = ExtResource("1_r42pi")
 shape = SubResource("CircleShape2D_rvue8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
 texture = ExtResource("1_g5r7h")
 
 [node name="Light" type="Sprite2D" parent="."]

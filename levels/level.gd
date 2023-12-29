@@ -9,6 +9,7 @@ extends Node2D
 @onready var spawn_timer: Timer = $SpawnTimer
 
 @export var easy_enemy: PackedScene
+@export var init_seed: PackedScene
 
 var scrolling_left: bool = false
 var scrolling_right: bool = false
@@ -31,6 +32,7 @@ func _ready():
   $LevelTimerCanvas.visible = false
   GameSignal.experience_generated.connect(_on_experience_generated)
   GameSignal.game_started.connect(_on_game_started)
+
   print("==Level started==")
 
 func _on_game_started() -> void:
@@ -43,6 +45,11 @@ func _on_game_started() -> void:
   $Menu.visible = false
   $MenuBgm.playing = false
   $GameBgm.playing = true
+  var inst = init_seed.instantiate()
+  inst.global_position = Vector2(672, 384)
+  add_child(inst)
+
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

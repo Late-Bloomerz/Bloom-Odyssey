@@ -20,7 +20,7 @@ width = 16
 
 [node name="Indicator" type="Sprite2D"]
 self_modulate = Color(1, 1, 1, 0.121569)
-scale = Vector2(1, 16)
+scale = Vector2(2, 32)
 texture = SubResource("GradientTexture1D_864r4")
 centered = false
 

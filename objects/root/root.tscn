@@ -44,7 +44,8 @@ _data = {
 blend_mode = 1
 
 [node name="Root" type="Sprite2D"]
-self_modulate = Color(1, 1, 1, 0.372549)
+self_modulate = Color(1, 1, 1, 0.0392157)
+scale = Vector2(2, 2)
 texture = ExtResource("1_gnmfe")
 centered = false
 hframes = 7
@@ -56,6 +57,7 @@ libraries = {
 autoplay = "grow"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 modulate = Color(0.603922, 0.968627, 0.345098, 0.0941176)
 material = SubResource("CanvasItemMaterial_swicw")
 position = Vector2(11, 8)

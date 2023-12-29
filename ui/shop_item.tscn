@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://76aq0ojx8p3"]
+[gd_scene load_steps=7 format=3 uid="uid://76aq0ojx8p3"]
 
 [ext_resource type="Script" path="res://ui/shop_item.gd" id="1_56slg"]
 [ext_resource type="Texture2D" uid="uid://bcw78oaamdi2r" path="res://assets/skill_empty.png" id="1_i3e7w"]
 [ext_resource type="Texture2D" uid="uid://0nadk7hd6if1" path="res://assets/mushrooms/Aspen.png" id="2_ok4gn"]
+[ext_resource type="Texture2D" uid="uid://2uaucjcup2ny" path="res://objects/seed/seed_bag.png" id="3_6t68h"]
 [ext_resource type="Texture2D" uid="uid://ds1edehutkoyn" path="res://assets/skill_cooldown_base.png" id="3_dpl0f"]
 [ext_resource type="Texture2D" uid="uid://db56lvhl6f2pw" path="res://assets/skill_cooldown.png" id="4_7b8oj"]
 
@@ -36,7 +37,7 @@ layout_mode = 2
 size_flags_stretch_ratio = 0.14
 tooltip_text = "Basic Seed
 Will generate experience"
-texture = ExtResource("2_ok4gn")
+texture = ExtResource("3_6t68h")
 expand_mode = 4
 
 [node name="SeedCooldown" type="TextureProgressBar" parent="CenterContainer"]

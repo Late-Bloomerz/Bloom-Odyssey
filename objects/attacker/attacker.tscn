@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://lypwpsjjqbxk"]
+[gd_scene load_steps=11 format=3 uid="uid://lypwpsjjqbxk"]
 
 [ext_resource type="PackedScene" uid="uid://bq6cgwjssljl6" path="res://objects/seed/seed.tscn" id="1_lotmt"]
 [ext_resource type="Script" path="res://objects/attacker/attacker.gd" id="2_gqiqx"]
-[ext_resource type="Texture2D" uid="uid://bwfbfw8l256ok" path="res://assets/mushrooms/Chanterelle.png" id="2_sc3wj"]
 [ext_resource type="PackedScene" uid="uid://c3jbgxkfnhmpg" path="res://objects/attack_projectile/attack_projectile.tscn" id="3_wfx3w"]
+[ext_resource type="PackedScene" uid="uid://dy7d7ibx0pe58" path="res://objects/attacker/mushroom_bloom.tscn" id="4_ho1fn"]
+[ext_resource type="Texture2D" uid="uid://dxtnwyxaxb3ly" path="res://objects/attacker/mushroom_seed.png" id="4_jv71p"]
 [ext_resource type="AudioStream" uid="uid://dwodydtdea55l" path="res://entities/enemy_attack.wav" id="5_3v1gx"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lvbuh"]
@@ -35,9 +36,11 @@ damage = 0
 cooldown = 1.0
 projectile_spped = 500
 projectile_scene = ExtResource("3_wfx3w")
+bloom_form = ExtResource("4_ho1fn")
+with_alt = false
 
 [node name="Sprite" parent="." index="0"]
-texture = ExtResource("2_sc3wj")
+texture = ExtResource("4_jv71p")
 
 [node name="DetectionRange" type="Area2D" parent="." index="6"]
 position = Vector2(8, 8)
@@ -45,6 +48,7 @@ collision_layer = 64
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRange" index="0"]
+position = Vector2(8, 7)
 shape = SubResource("CircleShape2D_lvbuh")
 debug_color = Color(0.956863, 0, 0.541176, 0.419608)
 
@@ -59,12 +63,15 @@ volume_db = -10.0
 max_polyphony = 10
 
 [node name="Particle2" type="GPUParticles2D" parent="." index="10"]
-position = Vector2(8, 4)
+position = Vector2(15, 15)
 emitting = false
 process_material = SubResource("ParticleProcessMaterial_p0p3b")
 lifetime = 0.5
 one_shot = true
 explosiveness = 1.0
+
+[node name="BloomTimer" parent="." index="11"]
+wait_time = 5.0
 
 [connection signal="area_entered" from="DetectionRange" to="." method="_on_detection_range_area_entered"]
 [connection signal="area_exited" from="DetectionRange" to="." method="_on_detection_range_area_exited"]
