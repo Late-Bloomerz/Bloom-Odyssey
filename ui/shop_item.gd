@@ -39,8 +39,8 @@ func _on_mouse_exited():
 
 func place():
   var mouse_pos = get_tree().current_scene.get_global_mouse_position()
-  var snapped_x = int(mouse_pos.x / 16) * 16
-  var snapped_y = int(mouse_pos.y / 16) * 16
+  var snapped_x = int(mouse_pos.x / 32) * 32
+  var snapped_y = int(mouse_pos.y / 32) * 32
 
   var instanced_seed = seed_scene.instantiate()
   instanced_seed.global_position.x = snapped_x

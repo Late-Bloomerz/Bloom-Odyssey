@@ -19,6 +19,7 @@ var drag: float = 0.5
 func _ready():
   attack_cooldown_timer.wait_time = cooldown
   GameSignal.enemy_died.connect(func(_enemy): closest_distance = 999999; search_target())
+  super()
 
 
 func _on_detection_range_area_entered(area):

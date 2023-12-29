@@ -9,7 +9,7 @@ const SPEED = 10
 
 @export var damage: int = 30
 @export var hp: int = 100
-@export var exp: int = 20
+@export var experience: int = 20
 @export var money: int = 20
 
 var closest_node
@@ -50,14 +50,15 @@ func _on_seed_died(died_seed):
 
 func _on_hurtbox_area_entered(area):
   if area.has_method("is_seed_projectile"):
-    area.queue_free()
+    if !area.has_method("piercing"):
+      area.queue_free()
     hp -= area.damage
     if hp <= 0:
       area.target = null
       queue_free()
       GameSignal.emit_signal("enemy_died", self)
       GameSignal.emit_signal("money_gained", money)
-      GameSignal.emit_signal("experience_generated", exp)
+      GameSignal.emit_signal("experience_generated", experience)
     sprite.modulate = Color.RED
     await get_tree().create_timer(0.1).timeout
     sprite.modulate = Color.WHITE

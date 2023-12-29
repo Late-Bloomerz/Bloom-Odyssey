@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://hfw3bg8ii8sg"]
+
+[ext_resource type="PackedScene" uid="uid://bq6cgwjssljl6" path="res://objects/seed/seed.tscn" id="1_rjxwx"]
+[ext_resource type="Texture2D" uid="uid://cqfwoqj2ubj6u" path="res://objects/pumpkin/pumpkin_seed.png" id="2_ju6et"]
+
+[node name="Pumpkin" instance=ExtResource("1_rjxwx")]
+hp = 300
+max_hp = 300
+with_alt = false
+
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource("2_ju6et")
