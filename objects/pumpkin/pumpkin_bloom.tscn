@@ -1,3 +1,116 @@
-[gd_scene format=3 uid="uid://drlexqimel4f8"]
+[gd_scene load_steps=15 format=3 uid="uid://drlexqimel4f8"]
+
+[ext_resource type="Texture2D" uid="uid://la3rokhlheip" path="res://objects/pumpkin/pumpkin_sheet.png" id="1_6nxra"]
+[ext_resource type="Shader" path="res://objects/seed/seed_bloom.gdshader" id="1_7up25"]
+[ext_resource type="AudioStream" uid="uid://c7tpk1gnwn8v6" path="res://assets/growth.wav" id="3_7o81m"]
+[ext_resource type="Script" path="res://objects/pumpkin/pumpkin_bloom.gd" id="3_gn86m"]
+[ext_resource type="PackedScene" uid="uid://dcfttjcgilw7p" path="res://objects/pumpkin/gulundung.tscn" id="4_1jo6j"]
+[ext_resource type="Texture2D" uid="uid://86gucp1mefw" path="res://objects/pumpkin/pumpkin_botak.png" id="5_fyqqw"]
+[ext_resource type="Texture2D" uid="uid://cmxxt0d0mqnbi" path="res://ui/experience_bar/channeling_bar_empty.png" id="7_p3coo"]
+[ext_resource type="Texture2D" uid="uid://bennpira4nmuh" path="res://ui/experience_bar/channeling_bar.png" id="8_1jjdk"]
+[ext_resource type="AudioStream" uid="uid://c00cgno6b56or" path="res://objects/pumpkin/bowl.wav" id="9_qckg1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o0w00"]
+shader = ExtResource("1_7up25")
+shader_parameter/speed = 1.0
+shader_parameter/minStrength = 0.02
+shader_parameter/maxStrength = 0.01
+shader_parameter/strengthScale = 100.0
+shader_parameter/interval = 3.5
+shader_parameter/detail = 1.0
+shader_parameter/distortion = null
+shader_parameter/heightOffset = null
+shader_parameter/offset = 0.0
+
+[sub_resource type="Animation" id="Animation_fufsv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.2, 0.2)]
+}
+
+[sub_resource type="Animation" id="Animation_xt6g8"]
+resource_name = "bloom"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.287175, 1),
+"update": 0,
+"values": [Vector2(0.2, 0.2), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_73yby"]
+_data = {
+"RESET": SubResource("Animation_fufsv"),
+"bloom": SubResource("Animation_xt6g8")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6jhxs"]
+radius = 25.0
 
 [node name="PumpkinBloom" type="Sprite2D"]
+material = SubResource("ShaderMaterial_o0w00")
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_6nxra")
+centered = false
+offset = Vector2(-16, -32)
+hframes = 3
+script = ExtResource("3_gn86m")
+cooldown_duration = 10
+gulundung = ExtResource("4_1jo6j")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_73yby")
+}
+autoplay = "bloom"
+
+[node name="Bloom" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_7o81m")
+
+[node name="BowlArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BowlArea"]
+position = Vector2(0, -15)
+shape = SubResource("CircleShape2D_6jhxs")
+
+[node name="CooldownTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="Labu" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("5_fyqqw")
+
+[node name="Progress" type="TextureProgressBar" parent="."]
+visible = false
+offset_left = -20.0
+offset_top = -45.0
+offset_right = 20.0
+offset_bottom = -5.0
+mouse_filter = 2
+step = 0.001
+texture_under = ExtResource("7_p3coo")
+texture_progress = ExtResource("8_1jjdk")
+
+[node name="Bowl" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_qckg1")
+volume_db = -10.0
+
+[connection signal="input_event" from="BowlArea" to="." method="_on_bowl_area_input_event"]
+[connection signal="mouse_entered" from="BowlArea" to="." method="_on_bowl_area_mouse_entered"]
+[connection signal="mouse_exited" from="BowlArea" to="." method="_on_bowl_area_mouse_exited"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]

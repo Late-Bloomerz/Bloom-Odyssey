@@ -21,13 +21,14 @@ var indicator_ref
 
 
 var placed_mushroom: Array[Vector2] = [Vector2(672, 384)]
-var money: int = 100
+var money: int = 300
 
 
 func _ready():
   GameSignal.money_gained.connect(_on_money_gained)
   GameSignal.item_purchased.connect(_on_item_purchsed)
   GameSignal.seed_died.connect(_on_seed_died)
+
 
 
 func _process(_delta):

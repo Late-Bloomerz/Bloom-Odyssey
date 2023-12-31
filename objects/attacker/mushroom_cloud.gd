@@ -5,6 +5,10 @@ var speed = 0.5
 @export var damage: int = 20
 var target
 
+func _ready():
+  damage = damage * Stats.plant_damage_mult
+
+
 func _process(delta):
   global_position.y += speed * delta * 60
 

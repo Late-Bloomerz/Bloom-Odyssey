@@ -11,4 +11,5 @@ func meledak():
 
 
 func _on_explode_timeout():
+  GameSignal.emit_signal("seed_died", self)
   meledak()

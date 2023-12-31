@@ -12,9 +12,9 @@ extends VBoxContainer
 
 
 func _ready():
-  seed_cooldown.max_value = cooldown_duration * 60
+  seed_cooldown.max_value = cooldown_duration * Stats.plant_cooldown_mult * 60
   seed_cooldown.value = 0
-  cooldown_timer.wait_time = cooldown_duration
+  cooldown_timer.wait_time = cooldown_duration * Stats.plant_cooldown_mult
   label.text = str(price)
 
 

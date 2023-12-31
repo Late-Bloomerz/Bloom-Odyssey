@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 GameSignal="*res://singletons/game_signal.gd"
 UiUtils="*res://singletons/ui_utils.gd"
+Stats="*res://singletons/stats.gd"
 
 [debug]
 

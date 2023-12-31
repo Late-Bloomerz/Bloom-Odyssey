@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name Enemy
 
 const SPEED = 10
 
@@ -9,8 +10,9 @@ const SPEED = 10
 
 @export var damage: int = 30
 @export var hp: int = 100
-@export var experience: int = 20
+@export var experience: int = 100
 @export var money: int = 20
+@export var flip: bool = false
 
 var closest_node
 var closest_distance = 999999
@@ -24,11 +26,21 @@ func _ready():
   GameSignal.seed_died.connect(_on_seed_died)
   var tween = get_tree().create_tween()
   await tween.tween_property(sprite, "modulate", Color.WHITE, 0.5).finished
+  hp = hp * Stats.enemy_health_mult
 
 func _physics_process(_delta):
   if target != null:
     velocity = global_position.direction_to(target.global_position) * SPEED
+
+    if flip:
+      var mouse_direction = (global_position- target.global_position ).normalized()
+      if mouse_direction.x < 0 and sign(sprite.scale.x) != sign(mouse_direction.x):
+        sprite.scale.x *= -1
+      elif mouse_direction.x > 0 and sign(sprite.scale.x) != sign(mouse_direction.x):
+        sprite.scale.x *= -1
   move_and_slide()
+
+
 
 func search_target():
   var nodes = get_tree().get_nodes_in_group("Seed")
@@ -54,8 +66,9 @@ func _on_hurtbox_area_entered(area):
       area.queue_free()
     hp -= area.damage
     if hp <= 0:
-      area.target = null
-      queue_free()
+      if !area.has_method("pumpkin"):
+        area.target = null
+      $MovementAnim.play("die")
       GameSignal.emit_signal("enemy_died", self)
       GameSignal.emit_signal("money_gained", money)
       GameSignal.emit_signal("experience_generated", experience)

@@ -1,4 +1,5 @@
 extends Area2D
+class_name Projectile
 
 var target
 var current_velocity: Vector2 = Vector2.ZERO
@@ -15,9 +16,10 @@ func _process(delta):
     fade()
   var direction: Vector2 = Vector2.UP.rotated(rotation).normalized()
   if target != null:
-    direction = global_position.direction_to(target.global_position)
+    direction = global_position.direction_to(target.global_position + Vector2(16,16))
   var desired_velocity = direction * projectile_spped
   var change = (desired_velocity - current_velocity) * drag
+  look_at(change)
   current_velocity += change * delta
   global_position += current_velocity * delta
 
