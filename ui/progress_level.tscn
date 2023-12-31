@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://de0aq5lse773g"]
+
+[ext_resource type="Texture2D" uid="uid://cmxxt0d0mqnbi" path="res://ui/experience_bar/channeling_bar_empty.png" id="1_66ciy"]
+[ext_resource type="Texture2D" uid="uid://bennpira4nmuh" path="res://ui/experience_bar/channeling_bar.png" id="2_joyqs"]
+
+[node name="ProgressLevel" type="TextureProgressBar"]
+offset_right = 32.0
+offset_bottom = 2.0
+max_value = 600.0
+nine_patch_stretch = true
+stretch_margin_left = 4
+stretch_margin_top = 2
+stretch_margin_right = 2
+texture_under = ExtResource("1_66ciy")
+texture_progress = ExtResource("2_joyqs")

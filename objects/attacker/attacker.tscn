@@ -32,10 +32,13 @@ color_ramp = SubResource("GradientTexture1D_k2d70")
 
 [node name="Attacker" instance=ExtResource("1_lotmt")]
 script = ExtResource("2_gqiqx")
-damage = 0
-cooldown = 1.0
-projectile_spped = 500
+damage = 20
+cooldown = 0.5
+projectile_spped = 400
 projectile_scene = ExtResource("3_wfx3w")
+hp = 80
+max_hp = 80
+experience_gain = 5
 bloom_form = ExtResource("4_ho1fn")
 with_alt = false
 

@@ -17,6 +17,7 @@ var current_velocity: Vector2 = Vector2.ZERO
 var drag: float = 0.5
 
 func _ready():
+  damage = damage * Stats.plant_damage_mult
   attack_cooldown_timer.wait_time = cooldown
   GameSignal.enemy_died.connect(func(_enemy): closest_distance = 999999; search_target())
   super()
@@ -48,6 +49,7 @@ func attack():
     $Particle.emitting = true
     var projectile_instance = projectile_scene.instantiate()
     projectile_instance.projectile_spped = projectile_spped
+    projectile_instance.damage = damage
     projectile_instance.target = target
     projectile_instance.global_position = global_position + Vector2(8,8)
     var num = randi() % 4

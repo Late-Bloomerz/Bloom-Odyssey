@@ -1,12 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://c3jbgxkfnhmpg"]
 
 [ext_resource type="Script" path="res://objects/attack_projectile/attack_projectile.gd" id="1_kr1ck"]
-[ext_resource type="Texture2D" uid="uid://c4vh2pt4medvd" path="res://assets/mushrooms/Inky_Cap.png" id="1_r21h1"]
+[ext_resource type="Texture2D" uid="uid://dwstoyocl2kjw" path="res://objects/attack_projectile/attack_particle.png" id="2_yefxw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gwghw"]
 radius = 11.0
 
 [node name="AttackProjectile" type="Area2D"]
+rotation = -3.14159
 collision_layer = 16
 collision_mask = 4
 script = ExtResource("1_kr1ck")
@@ -15,5 +16,7 @@ script = ExtResource("1_kr1ck")
 shape = SubResource("CircleShape2D_gwghw")
 debug_color = Color(0.956863, 0, 0.537255, 0.419608)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_r21h1")
+[node name="Sprite" type="Sprite2D" parent="."]
+rotation = -1.57079
+scale = Vector2(1.8125, 1.8125)
+texture = ExtResource("2_yefxw")
